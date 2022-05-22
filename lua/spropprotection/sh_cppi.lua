@@ -94,8 +94,12 @@ if SERVER then
 	end
 
 	function entmeta:CPPICanTool(ply, toolmode)
-		if not IsValid(ply) or not toolmode then
+		if not IsValid(ply) then
 			return false
+		end
+
+		if self == ply then
+			return true
 		end
 
 		local entidx = self:EntIndex()

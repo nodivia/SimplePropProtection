@@ -155,13 +155,22 @@ function SPropProtection.IsFriend(ply, ent)
 end
 
 function SPropProtection.PlayerCanTouch(ply, ent)
+	if not ent:IsValid() then
+		return false
+	end
+
 	if tonumber(SPropProtection.Config["toggle"]) == 0 or ent:GetClass() == "worldspawn" then
 		return true
 	end
+	
+	if ply.DetectionPPForce then
+		if SPropProtection.Props[ent:EntIndex()] and SPropProtection.Props[ent:EntIndex()].SteamID != ply:SteamID() then
+			return false
+		end
+	end
 
 	if not ent:GetNWString("Owner") or ent:GetNWString("Owner") == "" and not ent:IsPlayer() then
-		SPropProtection.PlayerMakePropOwner(ply, ent)
-		SPropProtection.Notify(ply, "You now own this prop")
+			SPropProtection.PlayerMakePropOwner(ply, ent)
 		return true
 	end
 

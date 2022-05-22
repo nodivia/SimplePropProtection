@@ -17,37 +17,6 @@ CreateClientConVar("spp_dpd", 1, false, true)
 CreateClientConVar("spp_dae", 0, false, true)
 CreateClientConVar("spp_delay", 120, false, true)
 
-function SPropProtection.HUDPaint()
-	if not IsValid(LocalPlayer()) then
-		return
-	end
-	local tr = util.TraceLine(util.GetPlayerTrace(LocalPlayer()))
-	if tr.HitNonWorld then
-		if IsValid(tr.Entity) and not tr.Entity:IsPlayer() and not LocalPlayer():InVehicle() then
-			local PropOwner = "Owner: "
-			local OwnerObj = tr.Entity:GetNWEntity("OwnerObj", false)
-			if IsValid(OwnerObj) and OwnerObj:IsPlayer() then
-				PropOwner = PropOwner .. OwnerObj:Name()
-			else
-				OwnerObj = tr.Entity:GetNWString("Owner", "N/A")
-				if type(OwnerObj) == "string" then
-					PropOwner = PropOwner .. OwnerObj
-				elseif IsValid(OwnerObj) and OwnerObj:IsPlayer() then
-					PropOwner = PropOwner .. OwnerObj:Name()
-				else
-					PropOwner = PropOwner .. "N/A"
-				end
-			end
-			surface.SetFont("Default")
-			local w, h = surface.GetTextSize(PropOwner)
-			w = w + 25
-			draw.RoundedBox(4, ScrW() - (w + 8), (ScrH() / 2 - 200) - (8), w + 8, h + 8, Color(0, 0, 0, 150))
-			draw.SimpleText(PropOwner, "Default", ScrW() - (w / 2) - 7, ScrH() / 2 - 200, Color(255, 255, 255, 255), 1, 1)
-		end
-	end
-end
-hook.Add("HUDPaint", "SPropProtection.HUDPaint", SPropProtection.HUDPaint)
-
 function SPropProtection.AdminPanel(Panel)
 	Panel:ClearControls()
 
